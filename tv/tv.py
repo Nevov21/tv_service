@@ -1,30 +1,36 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for, jsonify
 import subprocess
+import streamlink
 
 app = Flask(__name__)
 
 player_process = None
 PLAYER_CMD = 'mpv --fs --no-border --ao=alsa --audio-device=hdmi'
 
-# Twoja własna lista streamów
-STREAM_LIST = [
-    {"title": "Twitch – RocketLeague", "url": "https://www.twitch.tv/rocketleague"},
-    {"title": "YouTube – Piłka nożna na żywo", "url": "https://www.youtube.com/watch?v=hOoo9kEXOhI"},
-    {"title": "Twitch – LoL Championship", "url": "https://twitch.tv/lol_championship"}
-]
+@app.route("/get_qualities", methods=["POST"])
+def get_qualities():
+    url = request.form.get("url")
+    if not url:
+        return jsonify({"error": "Brak URL"}), 400
+    try:
+        streams = streamlink.streams(url)
+        qualities = sorted(streams.keys(), key=lambda q: (q == "best", q))
+        return jsonify({"qualities": qualities})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route("/", methods=["GET"])
 def index():
-    return render_template("index.html", streams=STREAM_LIST)
+    return render_template("index.html")
 
 @app.route("/play", methods=["POST"])
 def play():
     global player_process
 
-    # Pobranie linku z listy lub własnego pola
-    selected_url = request.form.get("url_select")
-    custom_url = request.form.get("url_custom")
-    url = custom_url.strip() if custom_url else selected_url
+    # Pobranie linku z pola
+    url = request.form.get("url_custom")
+    if url:
+        url = url.strip()
 
     quality = request.form.get("quality", "best")
 
@@ -57,4 +63,3 @@ def stop_player():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
-

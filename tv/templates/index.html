@@ -119,18 +119,11 @@
 <h1>📺 Raspberry Pi TV</h1>
 
 <form method="post" action="/play">
-    <label>Wybierz stream z listy:</label>
-    <select name="url_select">
-        {% for stream in streams %}
-            <option value="{{ stream.url }}">{{ stream.title }}</option>
-        {% endfor %}
-    </select>
-
-    <label>Lub wklej własny link:</label>
-    <input type="text" name="url_custom" placeholder="Wklej swój link (YouTube / Twitch / inne)">
+    <label>Wklej link do streamu:</label>
+    <input type="text" id="url_custom" name="url_custom" placeholder="Wklej swój link (YouTube / Twitch / inne)" onchange="fetchQualities()">
 
     <label>Wybierz jakość:</label>
-    <select name="quality">
+    <select id="quality_select" name="quality">
         <option value="best">Best</option>
         <option value="1080p">1080p</option>
         <option value="720p">720p</option>
@@ -162,6 +155,57 @@
     Made with ❤️ for your Raspberry Pi TV
 </footer>
 
+<script>
+    function fetchQualities() {
+        var urlInput = document.getElementById('url_custom');
+        var qualitySelect = document.getElementById('quality_select');
+        var url = urlInput.value;
+
+        if (url) {
+            // Save current options in case of failure, or just hardcode defaults?
+            // Let's just keep the current ones if we fail, but for loading we show "Loading..."
+            var originalOptions = qualitySelect.innerHTML;
+            
+            // Create a temporary loading option
+            qualitySelect.innerHTML = '<option>Pobieranie...</option>';
+            qualitySelect.disabled = true;
+
+            var formData = new FormData();
+            formData.append('url', url);
+
+            fetch('/get_qualities', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                qualitySelect.disabled = false;
+                if (data.error) {
+                    console.error('Error from server:', data.error);
+                    // Restore original options or show error in select
+                    qualitySelect.innerHTML = originalOptions; 
+                    alert('Nie udało się pobrać jakości: ' + data.error);
+                } else {
+                    qualitySelect.innerHTML = '';
+                    data.qualities.forEach(function(q) {
+                        var option = document.createElement('option');
+                        option.value = q;
+                        option.text = q;
+                        if (q === 'best') {
+                            option.selected = true;
+                        }
+                        qualitySelect.add(option);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+                qualitySelect.disabled = false;
+                qualitySelect.innerHTML = originalOptions;
+            });
+        }
+    }
+</script>
+
 </body>
 </html>
-
