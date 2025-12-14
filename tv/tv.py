@@ -27,6 +27,17 @@ def requires_auth(f):
 player_process = None
 PLAYER_CMD = 'mpv --fs --no-border --ao=alsa --audio-device=hdmi'
 
+TVP_CHANNELS = [
+    {"title": "TVP 1", "url": "https://vod.tvp.pl/live,1/tvp-1,399697"},
+    {"title": "TVP 2", "url": "https://vod.tvp.pl/live,1/tvp-2,399698"},
+    {"title": "TVP Info", "url": "https://vod.tvp.pl/live,1/tvp-info,399699"},
+    {"title": "TVP Kultura", "url": "https://vod.tvp.pl/live,1/tvp-kultura,399700"},
+    {"title": "TVP Kobieta", "url": "https://vod.tvp.pl/live,1/tvp-kobieta,399701"},
+    {"title": "TVP Sport", "url": "https://vod.tvp.pl/live,1/tvp-sport,399702"},
+    {"title": "TVP Historia", "url": "https://vod.tvp.pl/live,1/tvp-historia,399703"},
+    {"title": "TVP ABC", "url": "https://vod.tvp.pl/live,1/tvp-abc,399704"},
+]
+
 @app.route("/get_qualities", methods=["POST"])
 @requires_auth
 def get_qualities():
@@ -43,7 +54,7 @@ def get_qualities():
 @app.route("/", methods=["GET"])
 @requires_auth
 def index():
-    return render_template("index.html")
+    return render_template("index.html", channels=TVP_CHANNELS)
 
 @app.route("/play", methods=["POST"])
 @requires_auth

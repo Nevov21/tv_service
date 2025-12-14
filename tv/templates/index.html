@@ -201,6 +201,36 @@
             animation: pulse 1.5s infinite ease-in-out;
         }
 
+        /* Channels Grid */
+        .channels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 30px;
+            animation: fadeIn 1s ease-out 0.9s backwards;
+        }
+
+        .channel-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .channel-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
     </style>
 </head>
 <body>
@@ -242,6 +272,16 @@
             Zatrzymaj
         </button>
     </form>
+
+    {% if channels %}
+    <div class="channels-grid">
+        {% for channel in channels %}
+        <div class="channel-btn" onclick="selectChannel('{{ channel.url }}')">
+            {{ channel.title }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
 </div>
 
 <footer>
@@ -249,6 +289,12 @@
 </footer>
 
 <script>
+    function selectChannel(url) {
+        var urlInput = document.getElementById('url_custom');
+        urlInput.value = url;
+        fetchQualities();
+    }
+
     function fetchQualities() {
         var urlInput = document.getElementById('url_custom');
         var qualitySelect = document.getElementById('quality_select');
