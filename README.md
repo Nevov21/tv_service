@@ -1,7 +1,7 @@
 1. Zainstaluj pythona **sudo apt install python3.11** oraz **sudo apt install mpv** jeżeli nie ma
 2. Zainstaluj manadżer pakietów pip3: **sudo apt install pip3**
 3. Utwórz wirtualne środowisko poprzez komendę: **python3 -m venv ~/.venv**
-4. Wejdź do wirtualnego środowiska: **source ~/.venv/bin/activate** i pobierz Flask dla pythona **pip3 install flask**
+4. Wejdź do wirtualnego środowiska: **source ~/.venv/bin/activate** i pobierz Flask dla pythona **pip3 install flask** oraz streamlink jeżeli nie ma **pip3 install streamlink**
 5. Stwórz serwis tv.service: **vim /etc/systemd/system/tv.service** i wklej zawartość zmieniając **usera**:
 ```
 [Unit]
