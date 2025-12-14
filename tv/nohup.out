@@ -1,0 +1,19 @@
+ * Serving Flask app 'tv'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.18:8080
+[33mPress CTRL+C to quit[0m
+192.168.1.4 - - [14/Dec/2025 18:10:32] "GET / HTTP/1.1" 200 -
+192.168.1.4 - - [14/Dec/2025 18:11:10] "[32mPOST /play HTTP/1.1[0m" 302 -
+192.168.1.4 - - [14/Dec/2025 18:11:10] "GET / HTTP/1.1" 200 -
+[cli][info] Found matching plugin twitch for URL https://www.twitch.tv/rocketleague?sr=a
+[cli][info] Available streams: audio_only, 160p (worst), 360p, 480p, 720p, 720p60, 1080p60 (best)
+[cli][info] Opening stream: 720p (hls)
+[cli][info] Starting player: mpv --fs --no-border --ao=alsa --audio-device=hdmi
+192.168.1.4 - - [14/Dec/2025 18:11:21] "[32mPOST /stop HTTP/1.1[0m" 302 -
+192.168.1.4 - - [14/Dec/2025 18:11:21] "GET / HTTP/1.1" 200 -
+[cli][info] Stream ended
+Interrupted! Exiting...
+[cli][info] Closing currently open stream...

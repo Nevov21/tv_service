@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>📺 Raspberry Pi TV</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Reset */
+        * { margin:0; padding:0; box-sizing:border-box; }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+            animation: slideIn 1s ease forwards;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 20px;
+            animation: fadeIn 1.2s ease-in-out;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 15px;
+            margin: 8px 0;
+            border-radius: 10px;
+            border: none;
+            font-size: 1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            transform: scale(1.02);
+            box-shadow: 0 0 10px rgba(255,255,255,0.6);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 12px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        button svg {
+            margin-right: 10px;
+        }
+
+        .play {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+
+        .play:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(46,204,113,0.6);
+        }
+
+        .stop {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .stop:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(231,76,60,0.6);
+        }
+
+        footer {
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+            text-align: center;
+        }
+
+        /* Animacje */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<h1>📺 Raspberry Pi TV</h1>
+
+<form method="post" action="/play">
+    <label>Wybierz stream z listy:</label>
+    <select name="url_select">
+        {% for stream in streams %}
+            <option value="{{ stream.url }}">{{ stream.title }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Lub wklej własny link:</label>
+    <input type="text" name="url_custom" placeholder="Wklej swój link (YouTube / Twitch / inne)">
+
+    <label>Wybierz jakość:</label>
+    <select name="quality">
+        <option value="best">Best</option>
+        <option value="1080p">1080p</option>
+        <option value="720p">720p</option>
+        <option value="480p">480p</option>
+        <option value="360p">360p</option>
+        <option value="worst">Worst</option>
+    </select>
+
+    <button class="play" type="submit">
+        <!-- Ikona Play -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M10.804 8 5 11.618V4.382L10.804 8z"/>
+        </svg>
+        START
+    </button>
+</form>
+
+<form method="post" action="/stop">
+    <button class="stop" type="submit">
+        <!-- Ikona Stop -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M5 5h6v6H5V5z"/>
+        </svg>
+        STOP
+    </button>
+</form>
+
+<footer>
+    Made with ❤️ for your Raspberry Pi TV
+</footer>
+
+</body>
+</html>
+
