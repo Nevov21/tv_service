@@ -12,8 +12,8 @@ Wants=network-online.target
 [Service]
 Type=simple
 User=jacek
-WorkingDirectory=/home/jacek/tv
-ExecStart=/home/jacek/.venv/bin/python /home/jacek/tv/tv.py
+WorkingDirectory=/home/jacek/tv_service/tv
+ExecStart=/home/jacek/.venv/bin/python /home/jacek/tv_service/tv/tv.py
 Restart=always
 RestartSec=5
 
